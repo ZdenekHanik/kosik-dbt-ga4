@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: ga4_web
+    database: 'ga-kosik-02-2022'
+    schema: 'analytics_318761939'
+    tables:
+      - name: events
+        identifier: events_*
+        description: Main WEB events table for exported by GA4. Sharded by date. 
+      - name: events_intraday
+        identifier: events_intraday_*
+        description: Intraday events table which is optionally exported by GA4. Always contains events from the current day.
+  - name: ga4_app
+    database: 'ga-kosik-02-2022'
+    schema: 'analytics_284572561'
+    tables:
+      - name: events
+        identifier: events_*
+        description: Main APP events table for exported by GA4. Sharded by date. 
+      - name: events_intraday
+        identifier: events_intraday_*
+        description: Intraday events table which is optionally exported by GA4. Always contains events from the current day.
