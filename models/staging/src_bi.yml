@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: BI
+    database: 'ga-kosik-02-2022'
+    schema: 'DATAMART'
+    tables:
+      - name: BI_CUSTOMERS
+        description: Customers data.
