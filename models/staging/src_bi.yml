@@ -7,3 +7,5 @@ sources:
     tables:
       - name: BI_CUSTOMERS
         description: Customers data.
+      - name: BI_ORDER_ADDITIONAL
+        description: All orders including additional orders.
