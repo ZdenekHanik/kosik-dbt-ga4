@@ -1,10 +1,12 @@
+{%- set incremental_days = 3 -%}
+
 {{
     config(
-        pre_hook=[
-            "DELETE FROM `ga-kosik-02-2022.dbt_zhanik.test_table` WHERE customer_id_sap = 1039635043;"
-        ]
+        materialized = 'incremental',
+        sql_header = get_delete_statement(this, incremental_days)
     )
 }}
+
 
 {%- set events_list = ['add_shipping_info', 'add_contact_info', 'add_to_cart', 'begin_checkout', 'delete_cart',
     'login', 'login_start', 'purchase', 'remove_from_cart', 'search_click', 'view_cart', 'view_item', 'error_message'] -%}
@@ -45,7 +47,7 @@ WITH cte_ga_events AS (
     (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'widget_code') AS widget_code,
     null as app_item_source -- only for app
   FROM {{ source('ga4_web', 'events') }}
-  WHERE _TABLE_SUFFIX BETWEEN {{ get_table_suffix(10) }} AND {{ get_table_suffix(1) }}
+  WHERE _TABLE_SUFFIX BETWEEN {{ get_table_suffix(incremental_days) }} AND {{ get_table_suffix(1) }}
     AND event_name IN UNNEST({{ events_list }})
 
   UNION ALL
@@ -85,7 +87,7 @@ WITH cte_ga_events AS (
     null as widget_code, -- asi neni v app?
     (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'item_source') AS app_item_source
   FROM {{ source('ga4_app', 'events') }}
-  WHERE _TABLE_SUFFIX BETWEEN {{ get_table_suffix(10) }} AND {{ get_table_suffix(1) }}
+  WHERE _TABLE_SUFFIX BETWEEN {{ get_table_suffix(incremental_days) }} AND {{ get_table_suffix(1) }}
     AND event_name IN UNNEST(({{ events_list }}))
 )
 SELECT

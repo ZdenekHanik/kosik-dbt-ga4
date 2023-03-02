@@ -27,6 +27,8 @@ models:
   Kosik_GA4:
     staging:
       materialized: table
+    marts:
+      materialized: table
 
 vars:
   start_table_suffix: "20220905" # Defines the earliest GA4 event _TABLE_SUFFIX to load into base events model.
