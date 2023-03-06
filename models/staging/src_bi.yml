@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: BI
+    database: 'ga-kosik-02-2022'
+    schema: 'DATAMART'
+    tables:
+      - name: BI_CUSTOMERS
+        description: Customers data.
+      - name: BI_ORDER_ADDITIONAL
+        description: All orders including additional orders.
